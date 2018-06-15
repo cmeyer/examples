@@ -23,27 +23,25 @@ class CanvasWidgetDelegate(object):
         canvas_width = canvas_size.width
         canvas_height = canvas_size.height
 
-        drawing_context.save()
-        drawing_context.begin_path()
-        drawing_context.move_to(0, 0)
-        drawing_context.line_to(0, canvas_height)
-        drawing_context.line_to(canvas_width, canvas_height)
-        drawing_context.line_to(canvas_width, 0)
-        drawing_context.close_path()
-        gradient = drawing_context.create_linear_gradient(canvas_width, canvas_height, 0, 0, 0, canvas_height)
-        gradient.add_color_stop(0, '#FF8')
-        gradient.add_color_stop(1, '#8F8')
-        drawing_context.fill_style = gradient
-        drawing_context.fill()
-        drawing_context.restore()
+        with drawing_context.saver():
+            drawing_context.begin_path()
+            drawing_context.move_to(0, 0)
+            drawing_context.line_to(0, canvas_height)
+            drawing_context.line_to(canvas_width, canvas_height)
+            drawing_context.line_to(canvas_width, 0)
+            drawing_context.close_path()
+            gradient = drawing_context.create_linear_gradient(canvas_width, canvas_height, 0, 0, 0, canvas_height)
+            gradient.add_color_stop(0, '#FF8')
+            gradient.add_color_stop(1, '#8F8')
+            drawing_context.fill_style = gradient
+            drawing_context.fill()
 
-        drawing_context.save()
-        drawing_context.font = 'normal 11px serif'
-        drawing_context.text_align = 'center'
-        drawing_context.text_baseline = 'middle'
-        drawing_context.fill_style = '#000'
-        drawing_context.fill_text(_("Some Title"), canvas_width/2, canvas_height/2+1)
-        drawing_context.restore()
+        with drawing_context.saver():
+            drawing_context.font = 'normal 11px serif'
+            drawing_context.text_align = 'center'
+            drawing_context.text_baseline = 'middle'
+            drawing_context.fill_style = '#000'
+            drawing_context.fill_text(_("Some Title"), canvas_width/2, canvas_height/2+1)
 
 
 
